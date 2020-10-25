@@ -34,17 +34,14 @@ public class EditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
-
         Task m = em.find(Task.class, Integer.parseInt(request.getParameter("id")));
-
         em.close();
-
 
         request.setAttribute("task", m);
         request.setAttribute("_token", request.getSession().getId());
-
-
-        request.getSession().setAttribute("task_id", m.getId());
+        if(m != null) {
+            request.getSession().setAttribute("task_id", m.getId());
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/messages/edit.jsp");
         rd.forward(request, response);
